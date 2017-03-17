@@ -1,0 +1,75 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: pants fire head matrix
+  description: An api describing the state of pants, head, and fire.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Rob Beckmann
+    email: rjbeckmann@gmail.com
+  license:
+    name: MIT
+    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /pants:
+    get:
+      description: |
+        Return where your pants are and whether they are on fire or not
+      operationId: getPants
+      parameters:
+        - name: fire
+          in: query
+          description: return as though the pants are on fire
+          required: false
+          type: boolean
+        - name: head
+          in: query
+          description: return as though the pants on your head
+          required: false
+          type: boolean
+      responses:
+        200:
+          description: JSON object with string rep, and state of pants and fire
+          schema:
+            type: object
+            properties:
+              pants:
+                $ref: '#/definitions/Pants'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Pants:
+    type: object
+    description: JSON object including pants states and string rep
+    required:
+      - stringRep
+      - location
+      - onFire
+    properties:
+      stringRep:
+        type: string
+        example: Pants are on fire on your head
+      location:
+        type: string
+        example: head
+      onFire:
+        type: boolean
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
